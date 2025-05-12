@@ -66,4 +66,3 @@ Each user scans an RFID card to mark their attendance. The system:
 ---
 
 ## 📬 Thank You!
-Feel free to contribute, report issues, or suggest improvements!
