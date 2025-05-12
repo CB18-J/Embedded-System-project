@@ -1,115 +1,68 @@
-#include <SPI.h>
-#include <MFRC522.h>
-#include <Wire.h>
-#include <RTClib.h>
-#include <LiquidCrystal.h>
-#include <SD.h>
+# RFID-Based Attendance System Using Arduino
 
-// Pin configuration
-#define RST_PIN         9
-#define SS_PIN          10
-#define SD_CS_PIN       4
-#define BUZZER_PIN      6
-#define GREEN_LED       7
-#define RED_LED         8
+This project implements an RFID-based attendance system that automates tracking of students' or employees' presence. It uses RFID cards for identification and logs attendance with date and time. An optional GSM module can be used to send SMS notifications in real time.
 
-MFRC522 mfrc522(SS_PIN, RST_PIN);
-RTC_DS3231 rtc;
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
-File logFile;
+## 👤 Presented by
+**Chanchal Bhardwaj (21dcs020)**  
+**Guide:** Dr. Robin Singh Bhadoria
 
-String validIDs[] = {"ABC12345", "XYZ67890"};  // Add authorized RFID card UIDs here
+---
 
-void setup() {
-  Serial.begin(9600);
-  SPI.begin();
+## 🧠 Project Overview
 
-  // RFID
-  mfrc522.PCD_Init();
-  
-  // RTC
-  if (!rtc.begin()) {
-    Serial.println("RTC not found!");
-    while (1);
-  }
+Each user scans an RFID card to mark their attendance. The system:
+- Displays access status on an LCD
+- Logs the attendance in an SD card
+- Provides audio/visual feedback using a buzzer and LEDs
+- Optionally sends SMS alerts via GSM module
 
-  // LCD
-  lcd.begin(16, 2);
-  lcd.print("Scan your card");
+---
 
-  // SD Card
-  if (!SD.begin(SD_CS_PIN)) {
-    Serial.println("SD card failed");
-    lcd.clear();
-    lcd.print("SD card error");
-    while (1);
-  }
+## 🛠️ System Architecture
 
-  // Buzzer & LEDs
-  pinMode(BUZZER_PIN, OUTPUT);
-  pinMode(GREEN_LED, OUTPUT);
-  pinMode(RED_LED, OUTPUT);
-}
+1. **RFID Reader Module (RC522)** – Reads card and sends unique ID to Arduino  
+2. **Arduino Uno** – Main controller, handles logic  
+3. **RTC Module (DS3231)** – Provides real-time clock  
+4. **SD Card Module** – Stores attendance logs  
+5. **16x2 LCD** – Displays messages  
+6. **Buzzer + LEDs** – Feedback for valid/invalid scans  
+7. *(Optional)* **GSM Module** – Sends SMS notifications
 
-void loop() {
-  if (!mfrc522.PICC_IsNewCardPresent()) return;
-  if (!mfrc522.PICC_ReadCardSerial()) return;
+---
 
-  String uid = "";
-  for (byte i = 0; i < mfrc522.uid.size; i++) {
-    uid += String(mfrc522.uid.uidByte[i], HEX);
-  }
-  uid.toUpperCase();
+## 🔩 Hardware Components
 
-  Serial.println("Scanned UID: " + uid);
-  mfrc522.PICC_HaltA();
+- Arduino Uno  
+- RFID Reader (RC522 or EM-18)  
+- RFID Tags/Cards  
+- RTC Module (DS3231)  
+- SD Card Module  
+- 16x2 LCD Display  
+- Buzzer  
+- Green & Red LEDs  
+- Breadboard & Jumper Wires  
+- *(Optional)* GSM Module
 
-  DateTime now = rtc.now();
-  String timestamp = String(now.year()) + "-" + String(now.month()) + "-" + String(now.day()) +
-                     " " + String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second());
+---
 
-  bool authorized = false;
-  for (String id : validIDs) {
-    if (uid == id) {
-      authorized = true;
-      break;
-    }
-  }
+## 💻 Software Components
 
-  if (authorized) {
-    logAttendance(uid, timestamp);
-    showMessage("Access Granted", GREEN_LED, true);
-    // sendSMS("Access granted to " + uid); // Uncomment if GSM is added
-  } else {
-    showMessage("Access Denied", RED_LED, false);
-  }
-}
+- **Arduino IDE** – To write and upload code  
+- **Libraries:**
+  - MFRC522
+  - RTClib
+  - SD
+  - LiquidCrystal
 
-void showMessage(String message, int ledPin, bool isAuthorized) {
-  digitalWrite(ledPin, HIGH);
-  digitalWrite(BUZZER_PIN, HIGH);
-  lcd.clear();
-  lcd.print(message);
-  delay(2000);
-  digitalWrite(ledPin, LOW);
-  digitalWrite(BUZZER_PIN, LOW);
-  lcd.clear();
-  lcd.print("Scan your card");
-}
 
-void logAttendance(String uid, String time) {
-  logFile = SD.open("attendance.txt", FILE_WRITE);
-  if (logFile) {
-    logFile.println(uid + "," + time);
-    logFile.close();
-    Serial.println("Logged: " + uid + "," + time);
-  } else {
-    Serial.println("Failed to write log");
-  }
-}
+## 📚 References
 
-// Optional SMS function (if GSM module is used)
-// void sendSMS(String message) {
-//   Serial.println("Sending SMS: " + message);
-//   // Add GSM module logic here
-// }
+- Shoewu et al. (2015) – Automated RFID attendance tracking system  
+- Sumita Nainan et al. (2013) – RFID in educational institutions  
+- Chakraborty et al. (2024) – Secure RFID logging with SD card and RTC  
+- Kashif Ishaq & Samra Bibi (2023) – IoT RFID anti-proxy systems
+
+---
+
+## 📬 Thank You!
+
