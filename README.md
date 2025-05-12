@@ -1,107 +1,69 @@
-# Embedded-System-project
-RFID-Based Attendance System Using Arduino
-Presented by: CHANCHAL BHARDWAJ (21dcs020)
-Presented to: Dr. ROBIN SINGH BHADORIA
+# RFID-Based Attendance System Using Arduino
 
-Table of Contents
-Objective of the Project
+This project implements an RFID-based attendance system that automates tracking of students' or employees' presence. It uses RFID cards for identification and logs attendance with date and time. An optional GSM module can be used to send SMS notifications in real time.
 
-System Architecture
+## 👤 Presented by
+**Chanchal Bhardwaj (21dcs020)**  
+**Guide:** Dr. Robin Singh Bhadoria
 
-Hardware Components
+---
 
-Software Components
+## 🧠 Project Overview
 
-Implementation Snapshots
+Each user scans an RFID card to mark their attendance. The system:
+- Displays access status on an LCD
+- Logs the attendance in an SD card
+- Provides audio/visual feedback using a buzzer and LEDs
+- Optionally sends SMS alerts via GSM module
 
-References
+---
 
-Project Overview
-This project implements an RFID-based attendance system that automates the process of tracking attendance for students or employees. Each individual uses an RFID card to mark their presence, and the system sends an instant SMS notification to a predefined number, such as a parent or supervisor, ensuring real-time updates. This project improves attendance monitoring efficiency and provides a reliable, automated method for real-time tracking.
+## 🛠️ System Architecture
 
-System Architecture
-RFID Reader Module
+1. **RFID Reader Module (RC522)** – Reads card and sends unique ID to Arduino  
+2. **Arduino Uno** – Main controller, handles logic  
+3. **RTC Module (DS3231)** – Provides real-time clock  
+4. **SD Card Module** – Stores attendance logs  
+5. **16x2 LCD** – Displays messages  
+6. **Buzzer + LEDs** – Feedback for valid/invalid scans  
+7. *(Optional)* **GSM Module** – Sends SMS notifications
 
-Scans RFID cards/tags.
+---
 
-Sends the unique ID to the Arduino via serial communication.
+## 🔩 Hardware Components
 
-Arduino Uno (Microcontroller)
+- Arduino Uno  
+- RFID Reader (RC522 or EM-18)  
+- RFID Tags/Cards  
+- RTC Module (DS3231)  
+- SD Card Module  
+- 16x2 LCD Display  
+- Buzzer  
+- Green & Red LEDs  
+- Breadboard & Jumper Wires  
+- *(Optional)* GSM Module
 
-Receives the tag ID from RFID Reader.
+---
 
-Compares it with pre-defined registered IDs.
+## 💻 Software Components
 
-If not matched: Displays "Unauthorized Access", activates red LED + buzzer.
+- **Arduino IDE** – To write and upload code  
+- **Libraries:**
+  - MFRC522
+  - RTClib
+  - SD
+  - LiquidCrystal
 
-If matched: Logs attendance to SD card with time & date, displays message on LCD, activates green LED + buzzer, optionally sends SMS via GSM module.
+---
 
-RTC Module (DS3231)
+## 📚 References
 
-Provides real-time date and time for logging.
+- Shoewu et al. (2015) – Automated RFID attendance tracking system  
+- Sumita Nainan et al. (2013) – RFID in educational institutions  
+- Chakraborty et al. (2024) – Secure RFID logging with SD card and RTC  
+- Kashif Ishaq & Samra Bibi (2023) – IoT RFID anti-proxy systems
 
-Communicates with Arduino via I2C protocol.
+---
 
-SD Card Module
-
-Stores the attendance logs in a text or CSV file.
-
-Connected via SPI pins to Arduino.
-
-LCD Display (16x2)
-
-Displays welcome messages, names (optional), success/failure, and time.
-
-Buzzer & LEDs
-
-Green LED & buzzer = Authorized access.
-
-Red LED & buzzer = Unauthorized attempt.
-
-Hardware Components
-Arduino Uno → Acts as the brain of the system; controls all operations.
-
-RFID Reader (e.g., RC522 or EM-18) → Scans RFID cards/tags and sends unique IDs to the Arduino.
-
-RFID Tags/Cards → Unique ID tags assigned to users for attendance marking.
-
-16x2 LCD Display → Displays messages like "Access Granted", "Invalid ID", etc.
-
-RTC Module (DS3231 or DS1307) → Provides current date and time for accurate attendance logging.
-
-SD Card Module → Stores attendance logs in a text or CSV file format.
-
-Buzzer → Gives sound feedback for successful/unsuccessful scans.
-
-LEDs (Green & Red) → Visual feedback: Green = authorized, Red = unauthorized.
-
-Software Components
-Arduino IDE
-
-Purpose: To write, compile, and upload code to the Arduino board.
-
-Features: User-friendly interface, built-in serial monitor, supports multiple boards.
-
-MFRC522 Library
-
-Purpose: To communicate with the RC522 RFID reader.
-
-Features: Reads RFID tags, detects card presence, handles authentication.
-
-RTClib Library
-
-Purpose: To interface with the Real-Time Clock (RTC) module.
-
-Features: Retrieves accurate date and time, easy time formatting.
-
-Implementation Snapshots
-(Images of implementation would be placed here in a GitHub repo)
-
-References
-Shoewu et al. (2015) – Proposed an automated RFID-based attendance system that reduced time and improved accuracy compared to manual systems.
-
-Sumita Nainan et al. (2013) – Explained how RFID technology can streamline attendance tracking in educational institutions.
-
-Chakraborty et al. (2024) – Designed a secure RFID attendance system using Arduino, SD card, and RTC module for efficient logging.
-
-Kashif Ishaq & Samra Bibi (2023) – Reviewed IoT-based RFID systems and emphasized real-time data tracking and anti-proxy measures.
+## 📬 Thank You!
+Feel free to contribute, report issues, or suggest improvements!
